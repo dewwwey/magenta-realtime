@@ -16,7 +16,6 @@ dependencies = [
   "absl-py",
   "chex",
   "clu",
-  "flax",
   "gin-config",
   "flaxformer @ git+https://github.com/google/flaxformer@399ea3a",
   "google-cloud-storage",
@@ -28,11 +27,11 @@ dependencies = [
   "sentencepiece",
   "seqio",
   "soundfile",
-  "t5x @ git+https://github.com/google-research/t5x.git@92c5b46",
-  # TODO(chrisdonahue): Change nightly->stable once MusicCoCa supported.
-  "tensorflow-text-nightly",
-  "tf-nightly",
-  "tf-hub-nightly",
+  "t5x @ git+https://github.com/dewwwey/t5x.git",
+  "flax",
+  "tensorflow==2.16.1",
+  "tensorflow-text",
+  "tensorflow-hub",
   "tf2jax",
   "tqdm",
   "typing-extensions",
@@ -44,11 +43,11 @@ test = [
 ]
 gpu = [
   "jax[cuda12]",
-  "t5x[gpu] @ git+https://github.com/google-research/t5x.git@92c5b46",
+  "t5x[gpu] @ git+https://github.com/dewwwey/t5x.git",
 ]
 tpu = [
   "jax[tpu]",
-  "t5x[tpu] @ git+https://github.com/google-research/t5x.git@92c5b46",
+  "t5x[tpu] @ git+https://github.com/dewwwey/t5x.git",
 ]
 
 [project.urls]
