@@ -37,7 +37,7 @@ This fork of `magenta/magenta-realtime` was created to enable local execution on
     ```
 7.  **Set Google Cloud Project ID:**
     ```bash
-    export GOOGLE_CLOUD_PROJECT=proven-space-337622
+    export GOOGLE_CLOUD_PROJECT=(your gcloud project)
     ```
 8.  **Run a test script:** A basic script `run_magenta.py` is provided to generate a short audio chunk.
     ```bash
