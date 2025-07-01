@@ -1,5 +1,59 @@
 # Magenta RT: Streaming music generation!
 
+---
+This fork of `magenta/magenta-realtime` was created to enable local execution on Ubuntu with GPU support, addressing several dependency and compatibility challenges.
+
+## Local Setup Instructions (Ubuntu 24.04, AMD 7800X3D, 64 GB RAM, RTX 4070 Ti)
+
+1.  **Clone this repository:**
+    ```bash
+    git clone https://github.com/dewwwey/magenta-realtime.git
+    cd magenta-realtime
+    ```
+2.  **Install `uv` (if not already installed):**
+    ```bash
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    ```
+3.  **Create and activate a virtual environment:**
+    ```bash
+    uv venv
+    source .venv/bin/activate
+    ```
+4.  **Install core dependencies (including `fasttext` fix):**
+    *   This fork's `pyproject.toml` has been modified to use `fasttext==0.9.3` (which builds successfully) via a custom `t5x` fork.
+    ```bash
+    uv pip install .[test,gpu]
+    ```
+5.  **Force TensorFlow Nightly Builds:** The original project relies on specific TensorFlow nightly builds. We need to explicitly uninstall any existing TensorFlow packages and then install the exact nightly versions.
+    ```bash
+    source .venv/bin/activate
+    uv pip uninstall tensorflow tf-nightly tensorflow-cpu tf-nightly-cpu tensorflow-tpu tf-nightly-tpu tensorflow-hub tf-hub-nightly tensorflow-text tensorflow-text-nightly
+    uv pip install tf-nightly==2.20.0.dev20250619 tensorflow-text-nightly==2.20.0.dev20250316 tf-hub-nightly tf2jax
+    ```
+6.  **Authenticate with Google Cloud:** This is required to download model checkpoints.
+    ```bash
+    gcloud auth application-default login
+    # Follow the browser prompts to authenticate.
+    ```
+7.  **Set Google Cloud Project ID:**
+    ```bash
+    export GOOGLE_CLOUD_PROJECT=proven-space-337622
+    ```
+8.  **Run a test script:** A basic script `run_magenta.py` is provided to generate a short audio chunk.
+    ```bash
+    source .venv/bin/activate
+    python run_magenta.py
+    ```
+    This will generate `generated_audio.wav`. You can play it using `aplay generated_audio.wav`.
+
+## Current Limitations
+
+*   **GPU Memory Usage:** Even with `TF_GPU_ALLOCATOR=cuda_malloc_async`, the models can be very memory-intensive, leading to `ResourceExhaustedError` warnings. While the `base` model works, the `large` model might still cause Out-Of-Memory issues on some GPUs.
+*   **Dependency Complexity:** The project has a complex dependency graph with tight coupling between TensorFlow and JAX ecosystems, often relying on specific nightly builds. Future updates might reintroduce compatibility challenges.
+*   **XLA/StableHLO Errors in Tests:** Some tests still fail with XLA/StableHLO errors, indicating underlying binary incompatibilities that are difficult to resolve without rebuilding libraries from source. However, the core music generation functionality appears to work.
+
+---
+
 Magenta RealTime is a Python library for streaming music audio generation on
 your local device. It is the open source / on device companion to
 [MusicFX DJ Mode](https://labs.google/fx/tools/music-fx-dj) and the
