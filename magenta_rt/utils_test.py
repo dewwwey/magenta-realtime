@@ -18,7 +18,7 @@ import warnings
 from absl.testing import absltest
 import numpy as np
 
-from . import utils
+from magenta_rt import utils
 
 
 class UtilsTest(absltest.TestCase):

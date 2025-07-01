@@ -18,7 +18,7 @@ import tempfile
 
 from absl.testing import absltest
 
-from . import asset
+from magenta_rt import asset
 
 
 class TestAsset(absltest.TestCase):

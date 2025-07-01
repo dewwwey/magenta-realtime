@@ -28,10 +28,7 @@ dependencies = [
   "seqio",
   "soundfile",
   "t5x @ git+https://github.com/dewwwey/t5x.git",
-  "flax",
-  "tensorflow==2.16.1",
-  "tensorflow-text",
-  "tensorflow-hub",
+  
   "tf2jax",
   "tqdm",
   "typing-extensions",
@@ -62,4 +59,8 @@ where = ["."]
   "colab/static/js/*.js",
   "colab/static/html/*.html",
   ]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
 

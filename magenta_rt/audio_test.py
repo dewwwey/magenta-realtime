@@ -19,7 +19,7 @@ import tempfile
 from absl.testing import absltest
 import numpy as np
 
-from . import audio
+from magenta_rt import audio
 
 
 class TestWaveform(absltest.TestCase):

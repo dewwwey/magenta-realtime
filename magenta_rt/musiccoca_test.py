@@ -16,8 +16,8 @@
 from absl.testing import absltest
 import numpy as np
 
-from . import audio
-from . import musiccoca
+from magenta_rt import audio
+from magenta_rt import musiccoca
 
 
 class MusicCoCaTest(absltest.TestCase):

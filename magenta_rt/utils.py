@@ -31,6 +31,8 @@ def _globally_disable_gpu_memory_growth():
   for gpu in tf.config.list_physical_devices('GPU'):
     tf.config.experimental.set_memory_growth(gpu, True)
 
+_globally_disable_gpu_memory_growth() # Call it here
+
 
 @functools.cache
 def load_model_cached(model_type: str, model_path: str | pathlib.Path) -> Any:
@@ -40,7 +42,6 @@ def load_model_cached(model_type: str, model_path: str | pathlib.Path) -> Any:
   logging.getLogger('absl').setLevel(logging.ERROR)
   if isinstance(model_path, pathlib.Path):
     model_path = str(model_path)
-  _globally_disable_gpu_memory_growth()
   if model_type == 'tf':
     model = tf.saved_model.load(model_path)
   elif model_type == 'hub':

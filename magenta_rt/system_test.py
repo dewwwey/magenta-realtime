@@ -18,10 +18,10 @@ from typing import Optional, Tuple
 from absl.testing import absltest
 import numpy as np
 
-from . import audio
-from . import musiccoca
-from . import spectrostream
-from . import system
+from magenta_rt import audio
+from magenta_rt import musiccoca
+from magenta_rt import spectrostream
+from magenta_rt import system
 
 
 class TestMagentaRT(absltest.TestCase):

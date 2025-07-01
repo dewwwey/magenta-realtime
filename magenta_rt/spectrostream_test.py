@@ -16,8 +16,8 @@
 from absl.testing import absltest
 import numpy as np
 
-from . import audio
-from . import spectrostream
+from magenta_rt import audio
+from magenta_rt import spectrostream
 
 
 class SpectroStreamTest(absltest.TestCase):

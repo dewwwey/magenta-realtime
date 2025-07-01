@@ -31,7 +31,7 @@ from flaxformer.architectures.t5 import t5_architecture_test_utils as t5_test_ut
 from flaxformer.components import dense
 from flaxformer.components import embedding
 from flaxformer.components import layer_norm
-from . import modules as depthformer
+from magenta_rt.depthformer import modules as depthformer
 
 
 FINAL_KERNEL_INIT = nn.initializers.variance_scaling(

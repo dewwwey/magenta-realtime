@@ -16,7 +16,7 @@
 from absl.testing import absltest
 import numpy as np
 
-from . import decode
+from magenta_rt.depthformer import decode
 
 mock = absltest.mock
 
