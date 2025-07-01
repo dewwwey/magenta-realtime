@@ -23,13 +23,10 @@ dependencies = [
   "jaxlib",
   "numpy",
   "resampy",
-  # TODO(chrisdonahue): Do we need sentencepiece *and* tensorflow-text?
   "sentencepiece",
   "seqio",
   "soundfile",
   "t5x @ git+https://github.com/dewwwey/t5x.git",
-  
-  "tf2jax",
   "tqdm",
   "typing-extensions",
 ]
@@ -42,10 +39,7 @@ gpu = [
   "jax[cuda12]",
   "t5x[gpu] @ git+https://github.com/dewwwey/t5x.git",
 ]
-tpu = [
-  "jax[tpu]",
-  "t5x[tpu] @ git+https://github.com/dewwwey/t5x.git",
-]
+tpu = []
 
 [project.urls]
 Homepage = "https://github.com/magenta/magenta-realtime"
@@ -62,5 +56,3 @@ where = ["."]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
-
-
