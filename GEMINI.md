@@ -19,7 +19,7 @@
 - **Test Status:** 45 out of 49 tests passed before encountering the XLA errors, suggesting core functionality might be operational despite the XLA errors. However, the `ml-dtypes` and `tensorflow-text` conflicts prevented even basic import of necessary modules.
 - **Attempted CPU-only execution:** Even with CPU-only setup, the `ml-dtypes` incompatibility persisted, preventing the `run_magenta.py` script from executing due to `AttributeError: cannot import name 'float8_e3m4' from 'ml_dtypes'`.
 - **Solution for TensorFlow/JAX/ml-dtypes/tensorflow-text incompatibility:** Replicating the Colab notebook's installation strategy by explicitly uninstalling all TensorFlow packages and then installing specific nightly versions (`tf-nightly==2.20.0.dev20250619`, `tensorflow-text-nightly==2.20.0.dev20250316`, `tf-hub-nightly`) resolved the binary incompatibility issues. `tf2jax` was also explicitly installed.
-- **Current Status:** The `run_magenta.py` script successfully executed, generating an audio file that sounds like actual music. The `run_dynamic_style.py` script also successfully executed, demonstrating dynamic style blending. This confirms that the core music generation functionality is now working on the GPU.
+- **Current Status:** The `run_magenta.py` script successfully executed, generating an audio file that sounds like actual music. The `run_dynamic_style.py` script also successfully executed, demonstrating dynamic style blending and real-time audio streaming. The core music generation functionality is now working on the GPU, and real-time performance has been achieved for audio generation (5 seconds of audio in ~4 seconds).
 
 **VRAM Debugging Results:**
 - Initial VRAM usage: ~2.0 GB (baseline)
@@ -43,10 +43,19 @@
 2. Add detailed logging for TensorFlow/XLA memory allocations.
 3. Test with smaller model variants if available.
 4. Profile and optimize tensor retention in memory.
+5. **Quantization:** Investigate reducing the precision of model weights (e.g., float32 to float16 or int8) to reduce VRAM usage and improve performance. This may require retraining or fine-tuning.
+6. **Model Pruning/Distillation:** Explore techniques to reduce model size by removing redundant connections or training smaller models to mimic larger ones.
+7. **Dynamic Batching:** Investigate implementing dynamic batching, where the batch size adapts based on available memory.
+8. **JAX/XLA Memory Management:** Deep dive into JAX's memory allocation and deallocation mechanisms for explicit memory clearing or more aggressive garbage collection.
+9. **Offloading Layers/Compute:** Explore offloading less performance-critical layers or computations to CPU RAM or the integrated GPU (iGPU) to free up VRAM on the dedicated GPU. This would require significant changes to the model loading and execution pipeline.
+10. **Profiling:** Utilize advanced profiling tools (e.g., `nvprof`, `TensorFlow Profiler` for JAX) to pinpoint exact memory bottlenecks and inefficient operations.
+11. **JAX/XLA Memory Profiling:** Use JAX's built-in memory profiling tools (e.g., `jax.profiler`) to get a detailed breakdown of memory allocation during different phases of generation. This will help pinpoint the exact source of high VRAM usage.
+12. **Manual JAX/XLA Memory Management:** Investigate if there are any JAX/XLA APIs for explicit memory clearing or garbage collection that can be strategically called after certain operations (e.g., after `embed_style` or `generate_chunk`).
+13. **Chunking Strategy Optimization:** Re-evaluate the `chunk_length` and `context_length` parameters in `MagentaRTConfiguration`. While my previous attempt to reduce `context_length` didn't yield significant results, a more nuanced approach might be needed, perhaps by analyzing the memory footprint of different chunk sizes.
+14. **Explore `jax.experimental.compilation_cache`:** Investigate if JAX's compilation cache can be leveraged to reduce compilation overhead, which might indirectly affect perceived performance.
 
 
-1.  **Explore `MagentaRT` API:** Understand how to control the music generation (e.g., changing styles, parameters) from Python. This will involve examining `magenta_rt/system.py` and `magenta_rt/musiccoca.py` more deeply.
-2.  **Integrate with Home Assistant Sensors:** This will involve reading sensor data and mapping it to `MagentaRT` parameters. This is a separate development task that can begin once the `MagentaRT` API is understood.
+1.  **Integrate with Home Assistant Sensors:** This will involve reading sensor data and mapping it to `MagentaRT` parameters. This is a separate development task that can begin once the `MagentaRT` API is understood.
 
 ## Gemini CLI Usage Notes
 

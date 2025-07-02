@@ -133,7 +133,7 @@ def load_pretrained_model(
       output_dir='/tmp',
       partitioner=partitioner,
       model=model,
-      dtype=None,
+      dtype='bfloat16',
       restore_mode='specific',
       checkpoint_path=checkpoint_dir,
       input_shapes={

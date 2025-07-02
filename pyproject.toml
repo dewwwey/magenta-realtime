@@ -30,6 +30,7 @@ dependencies = [
   "t5x @ git+https://github.com/dewwwey/t5x.git",
   "tqdm",
   "typing-extensions",
+  "sounddevice",
 ]
 
 [project.optional-dependencies]
