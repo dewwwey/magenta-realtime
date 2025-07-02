@@ -22,6 +22,7 @@ dependencies = [
   "jax",
   "jaxlib",
   "numpy",
+  "pynvml",
   "resampy",
   "sentencepiece",
   "seqio",

@@ -46,6 +46,17 @@ This fork of `magenta/magenta-realtime` was created to enable local execution on
     ```
     This will generate `generated_audio.wav`. You can play it using `aplay generated_audio.wav`.
 
+### Generating audio with dynamic style blending
+
+A script `run_dynamic_style.py` is provided to demonstrate how to blend different musical styles dynamically during audio generation.
+
+```bash
+source .venv/bin/activate
+python run_dynamic_style.py
+```
+
+This will generate `dynamic_style_audio.wav`.
+
 ## Current Limitations
 
 *   **GPU Memory Usage:** Even with `TF_GPU_ALLOCATOR=cuda_malloc_async`, the models can be very memory-intensive, leading to `ResourceExhaustedError` warnings. While the `base` model works, the `large` model might still cause Out-Of-Memory issues on some GPUs.

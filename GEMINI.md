@@ -19,7 +19,14 @@
 - **Test Status:** 45 out of 49 tests passed before encountering the XLA errors, suggesting core functionality might be operational despite the XLA errors. However, the `ml-dtypes` and `tensorflow-text` conflicts prevented even basic import of necessary modules.
 - **Attempted CPU-only execution:** Even with CPU-only setup, the `ml-dtypes` incompatibility persisted, preventing the `run_magenta.py` script from executing due to `AttributeError: cannot import name 'float8_e3m4' from 'ml_dtypes'`.
 - **Solution for TensorFlow/JAX/ml-dtypes/tensorflow-text incompatibility:** Replicating the Colab notebook's installation strategy by explicitly uninstalling all TensorFlow packages and then installing specific nightly versions (`tf-nightly==2.20.0.dev20250619`, `tensorflow-text-nightly==2.20.0.dev20250316`, `tf-hub-nightly`) resolved the binary incompatibility issues. `tf2jax` was also explicitly installed.
-- **Current Status:** The `run_magenta.py` script successfully executed, generating an audio file that sounds like actual music. This confirms that the core music generation functionality is now working on the GPU.
+- **Current Status:** The `run_magenta.py` script successfully executed, generating an audio file that sounds like actual music. The `run_dynamic_style.py` script also successfully executed, demonstrating dynamic style blending. This confirms that the core music generation functionality is now working on the GPU.
+
+**VRAM Debugging Results:**
+- Initial VRAM usage: ~2.0 GB (baseline)
+- After style embedding: ~2.2 GB (+200 MB)
+- During audio generation: Spikes up to 11.4 GB (near GPU limit)
+- Final VRAM usage: ~11.4 GB (90% utilization)
+- Observed XLA warnings about large memory allocations (8-130 GiB attempts)
 
 ## Roadmap
 
@@ -30,6 +37,13 @@
 **System Information:** Ubuntu 24.04, AMD 7800X3D, 64 GB RAM, RTX 4070 Ti.
 
 ### Next Steps:
+
+**Memory Optimization Tasks:**
+1. Reduce batch size or other parameters in `generate_chunk` to lower VRAM usage.
+2. Add detailed logging for TensorFlow/XLA memory allocations.
+3. Test with smaller model variants if available.
+4. Profile and optimize tensor retention in memory.
+
 
 1.  **Explore `MagentaRT` API:** Understand how to control the music generation (e.g., changing styles, parameters) from Python. This will involve examining `magenta_rt/system.py` and `magenta_rt/musiccoca.py` more deeply.
 2.  **Integrate with Home Assistant Sensors:** This will involve reading sensor data and mapping it to `MagentaRT` parameters. This is a separate development task that can begin once the `MagentaRT` API is understood.
